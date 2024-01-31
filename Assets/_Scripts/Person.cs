@@ -2,24 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Person : MonoBehaviour
+public class Person
 {
-    [SerializeField] private string _name = "";
-    [SerializeField] private int _age = 18;
-    [SerializeField] private List<Trait> _traits = new List<Trait>();
-    [SerializeField] private Sprite _sprite;
+    private string _name;
+    private int _age;
+    private List<Trait> _traits = new List<Trait>();
+    private Sprite _sprite;
 
-    public string Description = "";
+    public string Name { get => _name; }
+    public int Age { get => _age; }
+    public List<Trait> Traits { get => _traits; }
+    public Sprite Sprite { get => _sprite; }
 
-    // Start is called before the first frame update
-    void Start()
+
+    public Person(string Name, int Age, List<Trait> Traits)
     {
-        
+        _name = Name;
+        _age = Age;
+        _traits = Traits;
+        GenerateSprite();
     }
 
-    // Update is called once per frame
-    void Update()
+
+
+    private void GenerateSprite()
     {
-        
+        //Todo Generate sprite code
     }
 }
