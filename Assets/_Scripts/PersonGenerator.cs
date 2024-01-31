@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using TMPro;
 using UnityEngine;
 
 
@@ -10,23 +12,37 @@ public class PersonGenerator : MonoBehaviour
     [SerializeField, Tooltip("x is min inclusive, y is max exclusive")] private Vector2 _numberOfTraitsRange;
     [SerializeField] private List<string> _nameListToGenerateFrom = new List<string>();
     [SerializeField, Tooltip("x is min inclusive, y is max exclusive")] private Vector2 _ageRange;
-    [SerializeField, Tooltip("x is min inclusive, y is max exclusive")] private Vector2 _numberOfPersonToGenerateRange;
+    
+    private int _numberOfPersonToGenerate;
 
     public List<Person> Persons = new List<Person>();
     // Start is called before the first frame update
     void Start()
     {
-        int numberOfPerson = Random.Range((int) _numberOfPersonToGenerateRange.x, (int) _numberOfPersonToGenerateRange.y);
-        for (int i = 0; i < numberOfPerson; i++)
-        {
-            Persons.Add(GeneratePerson());
-            Debug.Log($"Generated new Person number {i + 1}, Name: {Persons[i].Name}, Age: {Persons[i].Age} with {Persons[i].Traits.Count} traits");
-        }
+        //
+        //for (int i = 0; i < numberOfPerson; i++)
+        //{
+        //    Persons.Add(GeneratePerson());
+        //    Debug.Log($"Generated new Person number {i + 1}, Name: {Persons[i].Name}, Age: {Persons[i].Age} with {Persons[i].Traits.Count} traits");
+        //}
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+    }
+
+    public void ModifyNumberOfPersonsToGenerate(TMP_InputField tmp)
+    {
+        if (tmp.text == string.Empty)
+        {
+            _numberOfPersonToGenerate = 0;
+        }
+        else
+        {
+            _numberOfPersonToGenerate = int.Parse(tmp.text);
+        }
         
     }
 
