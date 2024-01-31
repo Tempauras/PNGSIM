@@ -12,6 +12,8 @@ public class BezierCurves : MonoBehaviour
     
     private LineRenderer _lineRenderer;
 
+    public List<Transform> Points => points;
+
     void Start()
     {
         _lineRenderer = GetComponent<LineRenderer>();
@@ -59,12 +61,12 @@ public class BezierCurves : MonoBehaviour
         _lineRenderer.SetPosition(numberOfLines, points[2].position);
     }
     
-    private float Sqr(float f)
+    public static float Sqr(float f)
     {
         return f * f;
     }
     
-    private float Cb(float f)
+    public static float Cb(float f)
     {
         return f * f * f;
     }
