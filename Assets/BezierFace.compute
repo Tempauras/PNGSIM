@@ -1,0 +1,51 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> Result;
+float2 point0;
+float2 point1;
+float2 point2;
+float2 point3;
+float texSize;
+
+
+float2 CalculateCubicBezier(float t)
+{
+    return (1-t)*(1-t)*(1-t) * point0 + 3 * (1-t)*(1-t) * t * point1 + 3 * (1-t) * t*t * point2 + t*t*t * point3;
+}
+
+
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    // TODO: insert actual code here!
+
+    float x = id.x / texSize;
+    float y = id.y / texSize;
+    
+    float4 color;
+    float calcY = CalculateCubicBezier(x).y;
+    
+    if (y - calcY >= 0.1)
+    {
+        color = float4(0,0,0,1);
+    }
+    else
+    {
+        color = float4(1,1,1,1);
+    }
+
+    if (x == texSize/2 && y == texSize/2)
+    {
+        color = float4(0,1,0,1);
+    }
+    
+    //Result[id.xy] = color;
+    //Result[id.xy] = vector(id.x,0,0,1);
+    Result[id.xy] = float4(x,y,0,1);
+}
+
+

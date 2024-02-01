@@ -64,12 +64,14 @@ Shader "Unlit/NewUnlitShader"
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
 
-                float2 currentUV = _MainTex_TexelSize * i.uv;
-                int bezierValue = beszier(currentUV.x);
-                if (bezierValue == currentUV.y)
-                {
-                    col = vector (0,0,0,1);
-                }
+                float2 currentCoord = _MainTex_TexelSize * i.uv;
+                // int bezierValue = beszier(currentUV.x);
+                // if (bezierValue == currentUV.y)
+                // {
+                //     col = vector (0,0,0,1);
+                // }
+
+                col = vector(beszier(i.uv.x),0,1)
                 
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
