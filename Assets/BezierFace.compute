@@ -4,14 +4,12 @@
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture
 RWTexture2D<float4> Result;
-float2 point0;
-float2 point1;
-float2 point2;
-float2 point3;
 float texSize;
+float thickness;
 
+StructuredBuffer<float2> pointsBuffer;
 
-float2 CalculateCubicBezier(float t)
+float2 CalculateCubicBezier(float2 point0,float2 point1,float2 point2,float2 point3, float t)
 {
     return (1-t)*(1-t)*(1-t) * point0 + 3 * (1-t)*(1-t) * t * point1 + 3 * (1-t) * t*t * point2 + t*t*t * point3;
 }
@@ -22,30 +20,40 @@ float2 CalculateCubicBezier(float t)
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
     // TODO: insert actual code here!
-
+    
     float x = id.x / texSize;
     float y = id.y / texSize;
     
     float4 color;
-    float calcY = CalculateCubicBezier(x).y;
+    float calcYForTopBezier = CalculateCubicBezier(pointsBuffer[0],pointsBuffer[1],pointsBuffer[2],pointsBuffer[5], x).y;
+    float calcYForBotBezier = CalculateCubicBezier(pointsBuffer[0],pointsBuffer[3],pointsBuffer[4],pointsBuffer[5], x).y;
+    float calcXForTopBezier = CalculateCubicBezier(pointsBuffer[0],pointsBuffer[1],pointsBuffer[2],pointsBuffer[5], y).x;
+    float calcXForBotBezier = CalculateCubicBezier(pointsBuffer[0],pointsBuffer[3],pointsBuffer[4],pointsBuffer[5], y).x;
+
+    //if (abs(y - calcYForTopBezier) <= thickness )
+    //
+
+
+    // distance(x, calcXForTopBezier) + distance(x, calcXForBotBezier) - distance(calcXForTopBezier, calcXForBotBezier) <= thickness
+
+    bool condition = distance(y, calcYForTopBezier) + distance(y, calcYForBotBezier) - distance(calcYForTopBezier, calcYForBotBezier) <= thickness;
+
+    //bool condition = distance(float2(x,y), float2(calcXForTopBezier,calcYForTopBezier)) <= thickness && distance(float2(x,y), float2(calcXForBotBezier,calcYForBotBezier)) <= thickness;
     
-    if (y - calcY >= 0.1)
+    if (condition)
     {
         color = float4(0,0,0,1);
     }
     else
     {
-        color = float4(1,1,1,1);
-    }
-
-    if (x == texSize/2 && y == texSize/2)
-    {
-        color = float4(0,1,0,1);
+        color = float4(1,1,1,0);
     }
     
-    //Result[id.xy] = color;
-    //Result[id.xy] = vector(id.x,0,0,1);
-    Result[id.xy] = float4(x,y,0,1);
+    
+    Result[id.xy] = color;
+    
+    
+    //Result[id.xy] = float4(1,1,1,1);
 }
 
 
