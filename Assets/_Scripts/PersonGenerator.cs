@@ -61,6 +61,7 @@ public class PersonGenerator : MonoBehaviour
         return person;
     }
 
+    //PROCEDURAL AF :D SO METAL ! 
     private void PickTrait(ref List<Trait> CurrentTraits)
     {
         bool hasSelectedNewCorrectTraits = false;

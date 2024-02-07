@@ -41,6 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Teeth
+    uniqueID: 4082953199
+    locked: 0
   - name: Skin
     uniqueID: 3386404415
     locked: 0
@@ -52,9 +55,6 @@ TagManager:
     locked: 0
   - name: Pupil
     uniqueID: 2246927817
-    locked: 0
-  - name: Teeth
-    uniqueID: 4082953199
     locked: 0
   - name: Mouth
     uniqueID: 286273387
