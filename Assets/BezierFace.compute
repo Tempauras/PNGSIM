@@ -1,59 +1,77 @@
 // Each #kernel tells which function to compile; you can have many kernels
-#pragma kernel CSMain
+#pragma kernel CSDraw
+#pragma kernel CalculateBezierPoints
 
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture
 RWTexture2D<float4> Result;
-float texSize;
 float thickness;
+int size;
 
-StructuredBuffer<float2> pointsBuffer;
+RWStructuredBuffer<float2> points_buffer;
+StructuredBuffer<float2> points;
 
-float2 CalculateCubicBezier(float2 point0,float2 point1,float2 point2,float2 point3, float t)
+float Cb(float val)
 {
-    return (1-t)*(1-t)*(1-t) * point0 + 3 * (1-t)*(1-t) * t * point1 + 3 * (1-t) * t*t * point2 + t*t*t * point3;
+    return val*val*val;
 }
 
-
-
-[numthreads(8,8,1)]
-void CSMain (uint3 id : SV_DispatchThreadID)
+float Sqr(float val)
 {
-    // TODO: insert actual code here!
+    return val*val;
+}
+
+void CubicBezier(float2 point0,float2 point1,float2 point2,float2 point3, float sampleCount, int arrayOffset)
+{
+    float t = 0;
+    for (int i = 0; i < sampleCount; i++)
+    {
+        //Cubic formula for bezier curves
+        float2 B = Cb(1-t) * point0 + 3 * Sqr(1-t) *t *point1 + 3 * (1-t) * Sqr(t) * point2 + Cb(t) * point3;
+            
+        points_buffer[i + arrayOffset] = B;
+        t += (1 / (float)sampleCount);
+    }
+}
+
+[numthreads(1,1,1)]
+void CalculateBezierPoints (uint3 id : SV_DispatchThreadID)
+{
+    CubicBezier(points[0], points[1], points[2], points[5], size, 0);
+    CubicBezier(points[0], points[3], points[4], points[5], size, size);
+}
+
+[numthreads(1,1,1)]
+void CSDraw (uint3 id : SV_DispatchThreadID)
+{
+    //TODO : give the array of the bezier curve to the compute shader in stead of the actual points, or find logic to display with compute shader
+
+    uint bufferDim;
+    uint bufferStride;
+    points_buffer.GetDimensions(bufferDim, bufferStride);
     
-    float x = id.x / texSize;
-    float y = id.y / texSize;
+    float4 color = float4(1,1,1,0);
+
+    float2 firstPoint = float2(1,1);
+    float2 secondPoint = float2(1,1);
     
-    float4 color;
-    float calcYForTopBezier = CalculateCubicBezier(pointsBuffer[0],pointsBuffer[1],pointsBuffer[2],pointsBuffer[5], x).y;
-    float calcYForBotBezier = CalculateCubicBezier(pointsBuffer[0],pointsBuffer[3],pointsBuffer[4],pointsBuffer[5], x).y;
-    float calcXForTopBezier = CalculateCubicBezier(pointsBuffer[0],pointsBuffer[1],pointsBuffer[2],pointsBuffer[5], y).x;
-    float calcXForBotBezier = CalculateCubicBezier(pointsBuffer[0],pointsBuffer[3],pointsBuffer[4],pointsBuffer[5], y).x;
+    for (uint i = 0; i < bufferDim/2; ++i)
+    {
+        if (distance(id.x, points_buffer[i].x) < distance(id.x, firstPoint.x))
+        {
+            firstPoint = points_buffer[i];
+        }
 
-    //if (abs(y - calcYForTopBezier) <= thickness )
-    //
+        if (distance(id.x, points_buffer[i + bufferDim/2].x) < distance(id.x, secondPoint.x))
+        {
+            secondPoint = points_buffer[i + bufferDim/2];
+        }
+    }
 
-
-    // distance(x, calcXForTopBezier) + distance(x, calcXForBotBezier) - distance(calcXForTopBezier, calcXForBotBezier) <= thickness
-
-    bool condition = distance(y, calcYForTopBezier) + distance(y, calcYForBotBezier) - distance(calcYForTopBezier, calcYForBotBezier) <= thickness;
-
-    //bool condition = distance(float2(x,y), float2(calcXForTopBezier,calcYForTopBezier)) <= thickness && distance(float2(x,y), float2(calcXForBotBezier,calcYForBotBezier)) <= thickness;
-    
-    if (condition)
+    if (id.y < (uint)(firstPoint.y + thickness) && id.y > (uint)(secondPoint.y - thickness))
     {
         color = float4(0,0,0,1);
     }
-    else
-    {
-        color = float4(1,1,1,0);
-    }
-    
     
     Result[id.xy] = color;
-    
-    
-    //Result[id.xy] = float4(1,1,1,1);
 }
-
-
