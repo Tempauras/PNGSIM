@@ -23,6 +23,8 @@ public class Shader : MonoBehaviour
     private void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+
+        mainCam.backgroundColor = _spriteRenderer.color;
         
         //create a render texture for the compute shader to draw on 
         renderTexture = new RenderTexture(mainCam.pixelWidth, mainCam.pixelHeight, 0);
@@ -77,7 +79,7 @@ public class Shader : MonoBehaviour
         
         computeShader.Dispatch(_kernelCalculateBezier, 1,1,1);
         
-        computeShader.Dispatch(_kernelDraw, renderTexture.width, renderTexture.height, 1);
+        computeShader.Dispatch(_kernelDraw, renderTexture.width/10 + 1, renderTexture.height/10 + 1, 1);
 
         await Task.Delay(15);
 

@@ -41,14 +41,18 @@ void CalculateBezierPoints (uint3 id : SV_DispatchThreadID)
     CubicBezier(points[0], points[3], points[4], points[5], size, size);
 }
 
-[numthreads(1,1,1)]
+[numthreads(10,10,1)]
 void CSDraw (uint3 id : SV_DispatchThreadID)
 {
     //TODO : give the array of the bezier curve to the compute shader in stead of the actual points, or find logic to display with compute shader
-
     uint bufferDim;
     uint bufferStride;
     points_buffer.GetDimensions(bufferDim, bufferStride);
+    
+    if ((int)id.x > size)
+    {
+        return;
+    }
     
     float4 color = float4(1,1,1,0);
 
