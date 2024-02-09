@@ -56,6 +56,9 @@ TagManager:
   - name: Pupil
     uniqueID: 2246927817
     locked: 0
+  - name: Lid
+    uniqueID: 4217365695
+    locked: 0
   - name: Mouth
     uniqueID: 286273387
     locked: 0

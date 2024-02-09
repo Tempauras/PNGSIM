@@ -7,6 +7,7 @@ public class Shader : MonoBehaviour
 {
     [SerializeField] private Camera mainCam;
     [SerializeField] private List<Transform> points;
+    [SerializeField] private List<SpriteRenderer> lidsSpriteRenderers;
     [SerializeField] private ComputeShader computeShader;
     [SerializeField] private RenderTexture renderTexture;
     [SerializeField] private Vector2 offset;
@@ -25,6 +26,11 @@ public class Shader : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
         mainCam.backgroundColor = _spriteRenderer.color;
+
+        foreach (SpriteRenderer lidsSpriteRenderer in lidsSpriteRenderers)
+        {
+            lidsSpriteRenderer.color = _spriteRenderer.color * Color.grey; 
+        }
         
         //create a render texture for the compute shader to draw on 
         renderTexture = new RenderTexture(mainCam.pixelWidth, mainCam.pixelHeight, 0);
@@ -64,8 +70,8 @@ public class Shader : MonoBehaviour
         computeShader.SetBuffer(_kernelDraw, "points_buffer",  _computeBuffer);
         computeShader.SetBuffer(_kernelCalculateBezier, "points_buffer",  _computeBuffer);
 
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         UpdateFrame();
-
     }
 
     private async Task UpdateFrame()
@@ -84,6 +90,7 @@ public class Shader : MonoBehaviour
         await Task.Delay(15);
 
         UpdateFrame();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
     }
 
