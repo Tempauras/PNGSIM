@@ -281,7 +281,7 @@ public class FaceController : MonoBehaviour
     {
         float leftScaleLid = Mathf.Lerp(MaxLidYScale, MinLidYScale, lids);
         
-        lidsTransform.transform.localScale = new Vector3(1, leftScaleLid, 1);
+        lidsTransform.transform.localScale = new Vector3(1.1f, leftScaleLid, 1);
     }
 
     private void UpdateMouthShape()
