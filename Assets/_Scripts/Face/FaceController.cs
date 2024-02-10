@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -20,7 +21,69 @@ public class FaceController : MonoBehaviour
     [Range(0, 1), SerializeField] private float rounded;
     [Range(0, 1), SerializeField] private float smiling;
 
-    
+    public UnityEvent refreshBeziers;
+    public float MouthOpen
+    {
+        get => mouthOpen;
+        set
+        {
+            mouthOpen = value;
+        
+            UpdateMouthOpen();
+            refreshBeziers.Invoke();
+        }
+    }
+
+    public float UpperLip
+    {
+        get => upperLip;
+        set
+        {
+            upperLip = value;
+            
+            UpdateUpperLip();
+            refreshBeziers.Invoke();
+        }
+    }
+
+    public float LowerLip
+    {
+        get => lowerLip;
+        set
+        {
+            lowerLip = value; 
+            
+            UpdateLowerLip();
+            refreshBeziers.Invoke();
+        }
+    }
+
+    public float Rounded
+    {
+        get => rounded;
+        set
+        {
+            rounded = value;
+            
+            UpdateMouthShape();
+            refreshBeziers.Invoke();
+        }
+    }
+
+    public float Smiling
+    {
+        get => smiling;
+        set
+        {
+            smiling = value; 
+            
+            UpdateSmile();
+            refreshBeziers.Invoke();
+        }
+    }
+
+
+
     [Header("Brow")] 
     
     [FormerlySerializedAs("brows")] [SerializeField] private List<Transform> browsTransforms;
@@ -31,10 +94,70 @@ public class FaceController : MonoBehaviour
     [FormerlySerializedAs("RightElevation")] [Range(0, 1), SerializeField] private float rightElevation = 0.25f;
     
     
+    public float LeftRotation
+    {
+        get => leftRotation;
+        set
+        {
+            leftRotation = value; 
+        
+            UpdateBrowRotation();
+        }
+    }
+
+    public float RightRotation
+    {
+        get => rightRotation;
+        set
+        {
+            rightRotation = value;
+        
+            UpdateBrowRotation();
+        }
+    }
+
+    public float LeftElevation
+    {
+        get => leftElevation;
+        set
+        {
+            leftElevation = value; 
+        
+            UpdateBrowPosition();
+        }
+    }
+
+    public float RightElevation
+    {
+        get => rightElevation;
+        set
+        {
+            rightElevation = value;
+        
+            UpdateBrowPosition();
+        }
+    }
+    
+    
     [Header("Lids")]
     
     [SerializeField] private Transform lidsTransform;
-    
+
+    [Range(0, 1), SerializeField] private float lids;
+
+
+    public float Lids
+    {
+        get => lids;
+        set
+        {
+            lids = value;
+            
+            UpdateLidPosition();
+        }
+    }
+
+
     [SerializeField] private bool batEyeLid = true;
     [EnableIf("batEyeLid"), SerializeField] private Vector2 timeBetweenBlink = new (2f,10f);
     [EnableIf("batEyeLid"), SerializeField] private Vector2 timeForBlink = new (100f,400f);
@@ -45,6 +168,8 @@ public class FaceController : MonoBehaviour
 
     [SerializeField] private Camera mainCamera;
     [SerializeField] private float pupilMoveDistance = 0.1f;
+
+    private float _localScale;
     
     // mouth Values
     private float _maxYPosRoot;
@@ -80,19 +205,88 @@ public class FaceController : MonoBehaviour
         _originalUpperLipPosYLeft = pointsTransforms[6].transform.localPosition.y;
         _originalUpperLipPosYRight = pointsTransforms[7].transform.localPosition.y;
         
+        _localScale = transform.localScale.x;
+        
         StartCoroutine(EyeLids());
+        
+        OnValidate();
     }
-    
-    
+
+    private void OnValidate()
+    {
+        //Rounded
+        UpdateMouthShape();
+        
+        //Upper Lip
+        UpdateUpperLip();
+        
+        //Lower lip
+        UpdateLowerLip();
+        
+        //Smiling
+        UpdateSmile();
+        
+        //OpenMouth
+        UpdateMouthOpen();
+        
+        //BrowRotation
+        UpdateBrowRotation();
+        
+        //BrowPosition
+        UpdateBrowPosition();
+        
+        //LidPosition
+        UpdateLidPosition();
+        
+        refreshBeziers.Invoke();
+    }
+
     private void Update()
     {
         _maxYPosRoot = pointsTransforms[2].transform.localPosition.y;
         _minYPosRoot = pointsTransforms[5].transform.localPosition.y;
         
-        var localScale = transform.localScale.x;
+        // //Rounded
+        // UpdateMouthShape();
+        //
+        // //Upper Lip
+        // UpdateUpperLip();
+        //
+        // //Lower lip
+        // UpdateLowerLip();
+        //
+        // //Smiling
+        // UpdateSmile();
+        //
+        // //OpenMouth
+        // UpdateMouthOpen();
+        //
+        // //BrowRotation
+        // UpdateBrowRotation();
+        //
+        // //BrowPosition
+        // UpdateBrowPosition();
+        //
+        // //LidPosition
+        // UpdateLidPosition();
         
-        //Rounded
-        float spread = Mathf.Lerp(MaxSeparation, MinSeparation, rounded) * localScale;
+        Vector2 directionOfMousePupilLeft =(Input.mousePosition - mainCamera.WorldToScreenPoint(pupils[0].transform.position)).normalized;
+        Vector2 directionOfMousePupilRight =(Input.mousePosition - mainCamera.WorldToScreenPoint(pupils[1].transform.position)).normalized;
+
+        pupils[0].transform.localPosition = Vector2.zero + directionOfMousePupilLeft * pupilMoveDistance;
+        pupils[1].transform.localPosition = Vector2.zero + directionOfMousePupilRight * pupilMoveDistance;
+    }
+
+    private void UpdateLidPosition()
+    {
+        float leftScaleLid = Mathf.Lerp(MaxLidYScale, MinLidYScale, lids);
+        
+        lidsTransform.transform.localScale = new Vector3(1, leftScaleLid, 1);
+    }
+
+    private void UpdateMouthShape()
+    {
+        float spread = Mathf.Lerp(MaxSeparation, MinSeparation, rounded) * _localScale;
 
         float oneSideValue = spread / 2;
         
@@ -100,63 +294,53 @@ public class FaceController : MonoBehaviour
         pointsTransforms[4].transform.position = new Vector3(oneSideValue,pointsTransforms[4].transform.position.y,pointsTransforms[4].transform.position.z);
         pointsTransforms[6].transform.position = new Vector3(-oneSideValue,pointsTransforms[6].transform.position.y,pointsTransforms[6].transform.position.z);
         pointsTransforms[7].transform.position = new Vector3(oneSideValue,pointsTransforms[7].transform.position.y,pointsTransforms[7].transform.position.z);
-        
-        //Upper Lip
+    }
 
+    private void UpdateUpperLip()
+    {
         float openUpper = Mathf.Lerp(0,MaxYLipOffset, upperLip);
         
         pointsTransforms[3].transform.localPosition = new Vector3(pointsTransforms[3].transform.localPosition.x,_originalUpperLipPosYLeft - openUpper,pointsTransforms[3].transform.localPosition.z);
         pointsTransforms[4].transform.localPosition = new Vector3(pointsTransforms[4].transform.localPosition.x,_originalUpperLipPosYRight - openUpper,pointsTransforms[4].transform.localPosition.z);
-        
-        //Lower lip
-        
+    }
+
+    private void UpdateLowerLip()
+    {
         float openLower = Mathf.Lerp(0,MaxYLipOffset, lowerLip);
         
         pointsTransforms[6].transform.localPosition = new Vector3(pointsTransforms[6].transform.localPosition.x, _originalLowerLipPosYLeft + openLower, pointsTransforms[6].transform.localPosition.z);
         pointsTransforms[7].transform.localPosition = new Vector3(pointsTransforms[7].transform.localPosition.x, _originalLowerLipPosYRight + openLower, pointsTransforms[7].transform.localPosition.z);
-        
-        //Smiling
+    }
 
-        float yPos = Mathf.Lerp(_maxYPosRoot, _minYPosRoot, smiling) * localScale;
+    private void UpdateSmile()
+    {
+        float yPos = Mathf.Lerp(_maxYPosRoot, _minYPosRoot, smiling) * _localScale;
         pointsTransforms[0].transform.position = new Vector3(pointsTransforms[0].transform.position.x,yPos ,pointsTransforms[0].transform.position.z);
         pointsTransforms[1].transform.position = new Vector3(pointsTransforms[1].transform.position.x,yPos ,pointsTransforms[1].transform.position.z);
-        
-        //OpenMouth
-        
+    }
+
+    private void UpdateMouthOpen()
+    {
         float openValue = Mathf.Lerp(MaxLowerJawPos, MinLowerJawPos, mouthOpen); 
         pointsTransforms[5].transform.localPosition = new Vector3(pointsTransforms[5].transform.localPosition.x,openValue,pointsTransforms[5].transform.localPosition.z);
-        
-        //BrowRotation
-        
+    }
+    
+    private void UpdateBrowRotation()
+    {
         float rotateValueLeft = Mathf.Lerp(MaxBrowRotateValue,-MaxBrowRotateValue,leftRotation);
         float rotateValueRight = Mathf.Lerp(-MaxBrowRotateValue,MaxBrowRotateValue,rightRotation);
 
-
         browsTransforms[0].transform.localRotation = Quaternion.Euler(new Vector3(0, 0, rotateValueLeft));
         browsTransforms[1].transform.localRotation = Quaternion.Euler(new Vector3(0, 0, rotateValueRight));
-        
-        
-        //BrowPosition
-        
+    }
+
+    private void UpdateBrowPosition()
+    {
         float elevateValueLeft = Mathf.Lerp(0,MaxBrowHeightValue,leftElevation);
         float elevateValueRight = Mathf.Lerp(0,MaxBrowHeightValue,rightElevation);
         
         browsTransforms[0].transform.localPosition = new Vector3(-0.15f, elevateValueLeft, 0);
         browsTransforms[1].transform.localPosition = new Vector3(0.15f, elevateValueRight, 0);
-        
-        //LidPosition
-
-        // float leftScaleLid = Mathf.Lerp(MaxLidYScale, MinLidYScale, lids);
-        //
-        // lidsTransform.transform.localScale = new Vector3(1, leftScaleLid, 1);
-
-
-        Vector2 directionOfMousePupilLeft =(Input.mousePosition - mainCamera.WorldToScreenPoint(pupils[0].transform.position)).normalized;
-        Vector2 directionOfMousePupilRight =(Input.mousePosition - mainCamera.WorldToScreenPoint(pupils[1].transform.position)).normalized;
-
-        pupils[0].transform.localPosition = Vector2.zero + directionOfMousePupilLeft * pupilMoveDistance;
-        pupils[1].transform.localPosition = Vector2.zero + directionOfMousePupilRight * pupilMoveDistance;
-
     }
 
 

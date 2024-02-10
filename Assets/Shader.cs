@@ -1,10 +1,14 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class Shader : MonoBehaviour
 {
+    [SerializeField] private FaceController faceController;
+    
     [SerializeField] private Camera mainCam;
     [SerializeField] private List<Transform> points;
     [SerializeField] private List<SpriteRenderer> lidsSpriteRenderers;
@@ -69,33 +73,25 @@ public class Shader : MonoBehaviour
         //giving that array to both kernels of compute shader
         computeShader.SetBuffer(_kernelDraw, "points_buffer",  _computeBuffer);
         computeShader.SetBuffer(_kernelCalculateBezier, "points_buffer",  _computeBuffer);
-
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        UpdateFrame();
+        
+        faceController.refreshBeziers.AddListener(() => StartCoroutine(UpdateFrame()));
     }
 
-    private async Task UpdateFrame()
+    private IEnumerator UpdateFrame()
     {
         //updates the 4 points of the 2 bezier we want to draw 
-        
         UpdatePointBuffer();
         computeShader.SetBuffer(_kernelCalculateBezier, "points",  _pointBuffer);
-        
+            
         //calls the dispatch, essentially tells the compute shaders to run 
-        
+                    
         computeShader.Dispatch(_kernelCalculateBezier, 1,1,1);
-        
+                    
         computeShader.Dispatch(_kernelDraw, renderTexture.width/10 + 1, renderTexture.height/10 + 1, 1);
-
-        await Task.Delay(15);
-
-        UpdateFrame();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-
+        yield return null;
     }
 
     
-
     private void UpdatePointBuffer()
     {
         // creates a list of screen space vector2 from the transform points of the bezier  
