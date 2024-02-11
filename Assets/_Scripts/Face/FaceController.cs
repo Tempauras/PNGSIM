@@ -11,6 +11,8 @@ using Random = UnityEngine.Random;
 
 public class FaceController : MonoBehaviour
 {
+    [SerializeField] private Shader _shader;
+    
     [Header("Mouth")]
     
     [FormerlySerializedAs("points")][SerializeField] private List<Transform> pointsTransforms;
@@ -195,7 +197,7 @@ public class FaceController : MonoBehaviour
 
     //Lid Values
 
-    private const float MaxLidYScale = 0.2f;
+    private const float MaxLidYScale = 0f;
     private const float MinLidYScale = 1.1f;
 
     private void Start()
@@ -245,7 +247,6 @@ public class FaceController : MonoBehaviour
 
     private void Update()
     {
-        
         // //Rounded
         // UpdateMouthShape();
         //
@@ -347,6 +348,11 @@ public class FaceController : MonoBehaviour
         
         browsTransforms[0].transform.localPosition = new Vector3(-0.15f, elevateValueLeft, 0);
         browsTransforms[1].transform.localPosition = new Vector3(0.15f, elevateValueRight, 0);
+    }
+
+    private void UpdateColours(Color colour)
+    {
+        _shader.UpdateColours(colour);
     }
 
 

@@ -9,7 +9,7 @@ public class Shader : MonoBehaviour
 {
     [SerializeField] private FaceController faceController;
     
-    [SerializeField] private Camera mainCam;
+    [FormerlySerializedAs("mainCam")] [SerializeField] private Camera Cam;
     [SerializeField] private List<Transform> points;
     [SerializeField] private List<SpriteRenderer> lidsSpriteRenderers;
     [SerializeField] private ComputeShader computeShader;
@@ -29,15 +29,10 @@ public class Shader : MonoBehaviour
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
-        mainCam.backgroundColor = _spriteRenderer.color;
-
-        foreach (SpriteRenderer lidsSpriteRenderer in lidsSpriteRenderers)
-        {
-            lidsSpriteRenderer.color = _spriteRenderer.color * Color.grey; 
-        }
+        UpdateColours(_spriteRenderer.color);
         
         //create a render texture for the compute shader to draw on 
-        renderTexture = new RenderTexture(mainCam.pixelWidth, mainCam.pixelHeight, 0);
+        renderTexture = new RenderTexture(Cam.pixelWidth, Cam.pixelHeight, 0);
         renderTexture.enableRandomWrite = true;
         renderTexture.Create();
         
@@ -99,11 +94,23 @@ public class Shader : MonoBehaviour
         {
             Vector3 position;
             Vector2 pos = new Vector2((position = x.position).x, position.y);
-            return (Vector2)mainCam.WorldToScreenPoint(new Vector2(pos.x*scale+offset.x, pos.y*scale+offset.y));
+            return (Vector2)Cam.WorldToScreenPoint(new Vector2(pos.x*scale+offset.x, pos.y*scale+offset.y));
         });
         
         //sets the data to the compute buffer
         _pointBuffer.SetData(bezierPoints);
+    }
+
+    public void UpdateColours(Color colour)
+    {
+        _spriteRenderer.color = colour;
+        
+        Cam.backgroundColor = _spriteRenderer.color;
+
+        foreach (SpriteRenderer lidsSpriteRenderer in lidsSpriteRenderers)
+        {
+            lidsSpriteRenderer.color = _spriteRenderer.color * Color.grey; 
+        }
     }
 
     private void OnDisable()

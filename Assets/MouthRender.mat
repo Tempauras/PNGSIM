@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Test
+  m_Name: MouthRender
   m_Shader: {fileID: -6465566751694194690, guid: e65b4d373ff9d8d45b1fa06733cf606e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
