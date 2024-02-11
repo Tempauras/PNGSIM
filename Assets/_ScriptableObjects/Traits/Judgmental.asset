@@ -18,14 +18,14 @@ MonoBehaviour:
   - Emotion: 0
     Value: 0
   - Emotion: 1
-    Value: 0
+    Value: 1
   - Emotion: 2
-    Value: 0
+    Value: 1
   - Emotion: 3
-    Value: 0
+    Value: 2
   - Emotion: 4
-    Value: 0
+    Value: 3
   - Emotion: 5
-    Value: 0
+    Value: 1
   NonCompatibleTrait:
   - {fileID: 11400000, guid: eb51363f21d962848b07a3de925353dd, type: 2}

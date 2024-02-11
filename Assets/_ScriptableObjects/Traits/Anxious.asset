@@ -18,13 +18,13 @@ MonoBehaviour:
   - Emotion: 0
     Value: 0
   - Emotion: 1
-    Value: 0
+    Value: 3
   - Emotion: 2
-    Value: 0
+    Value: 4
   - Emotion: 3
     Value: 0
   - Emotion: 4
-    Value: 0
+    Value: 1
   - Emotion: 5
     Value: 0
   NonCompatibleTrait:

@@ -46,6 +46,16 @@ public class PersonGenerator : MonoBehaviour
         
     }
 
+    public void GeneratePersonOnClick()
+    {
+        Persons.Clear();
+        for (int i = 0; i < _numberOfPersonToGenerate; i++)
+        {
+            Persons.Add(GeneratePerson());
+            Debug.Log($"Generated new Person number {i + 1}, Name: {Persons[i].Name}, Age: {Persons[i].Age} with {Persons[i].Traits.Count} traits");
+        }
+    }
+
     private Person GeneratePerson()
     {
         int age = Random.Range((int)_ageRange.x, (int)_ageRange.y);

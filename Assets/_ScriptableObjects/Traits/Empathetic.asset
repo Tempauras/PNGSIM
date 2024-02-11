@@ -16,16 +16,16 @@ MonoBehaviour:
   TraitDescription: 
   TraitsEffect:
   - Emotion: 0
-    Value: 0
+    Value: 3
   - Emotion: 1
-    Value: 0
+    Value: 3
   - Emotion: 2
-    Value: 0
+    Value: 2
   - Emotion: 3
-    Value: 0
+    Value: 1
   - Emotion: 4
-    Value: 0
+    Value: 2
   - Emotion: 5
-    Value: 0
+    Value: 2
   NonCompatibleTrait:
   - {fileID: 11400000, guid: c7e9e8f46da52274d8ede0e67c7c22c5, type: 2}
