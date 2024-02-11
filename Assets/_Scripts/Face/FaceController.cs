@@ -205,6 +205,8 @@ public class FaceController : MonoBehaviour
         _originalUpperLipPosYLeft = pointsTransforms[6].transform.localPosition.y;
         _originalUpperLipPosYRight = pointsTransforms[7].transform.localPosition.y;
         
+        _maxYPosRoot = pointsTransforms[2].transform.localPosition.y;
+        
         _localScale = transform.localScale.x;
         
         StartCoroutine(EyeLids());
@@ -243,8 +245,6 @@ public class FaceController : MonoBehaviour
 
     private void Update()
     {
-        _maxYPosRoot = pointsTransforms[2].transform.localPosition.y;
-        _minYPosRoot = pointsTransforms[5].transform.localPosition.y;
         
         // //Rounded
         // UpdateMouthShape();
@@ -277,6 +277,11 @@ public class FaceController : MonoBehaviour
         pupils[1].transform.localPosition = Vector2.zero + directionOfMousePupilRight * pupilMoveDistance;
     }
 
+    private void UpdateMinRootPos()
+    {
+        _minYPosRoot = pointsTransforms[5].transform.localPosition.y;
+    }
+    
     private void UpdateLidPosition()
     {
         float leftScaleLid = Mathf.Lerp(MaxLidYScale, MinLidYScale, lids);
@@ -323,6 +328,7 @@ public class FaceController : MonoBehaviour
     {
         float openValue = Mathf.Lerp(MaxLowerJawPos, MinLowerJawPos, mouthOpen); 
         pointsTransforms[5].transform.localPosition = new Vector3(pointsTransforms[5].transform.localPosition.x,openValue,pointsTransforms[5].transform.localPosition.z);
+        UpdateMinRootPos();
     }
     
     private void UpdateBrowRotation()
