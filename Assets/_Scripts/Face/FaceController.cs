@@ -29,7 +29,7 @@ public class FaceController : MonoBehaviour
         get => mouthOpen;
         set
         {
-            mouthOpen = value;
+            mouthOpen = Mathf.Clamp(value, 0.0f, 1.0f);
         
             UpdateMouthOpen();
             refreshBeziers.Invoke();
@@ -41,7 +41,7 @@ public class FaceController : MonoBehaviour
         get => upperLip;
         set
         {
-            upperLip = value;
+            upperLip = Mathf.Clamp(value, 0.0f, 1.0f);
             
             UpdateUpperLip();
             refreshBeziers.Invoke();
@@ -53,7 +53,7 @@ public class FaceController : MonoBehaviour
         get => lowerLip;
         set
         {
-            lowerLip = value; 
+            lowerLip = Mathf.Clamp(value, 0.0f, 1.0f); 
             
             UpdateLowerLip();
             refreshBeziers.Invoke();
@@ -65,7 +65,7 @@ public class FaceController : MonoBehaviour
         get => rounded;
         set
         {
-            rounded = value;
+            rounded = Mathf.Clamp(value, 0.0f, 1.0f);
             
             UpdateMouthShape();
             refreshBeziers.Invoke();
@@ -77,7 +77,7 @@ public class FaceController : MonoBehaviour
         get => smiling;
         set
         {
-            smiling = value; 
+            smiling = Mathf.Clamp(value, 0.0f, 1.0f); 
             
             UpdateSmile();
             refreshBeziers.Invoke();
@@ -101,7 +101,7 @@ public class FaceController : MonoBehaviour
         get => leftRotation;
         set
         {
-            leftRotation = value; 
+            leftRotation = Mathf.Clamp(value, 0.0f, 1.0f); 
         
             UpdateBrowRotation();
         }
@@ -112,7 +112,7 @@ public class FaceController : MonoBehaviour
         get => rightRotation;
         set
         {
-            rightRotation = value;
+            rightRotation = Mathf.Clamp(value, 0.0f, 1.0f);
         
             UpdateBrowRotation();
         }
@@ -123,7 +123,7 @@ public class FaceController : MonoBehaviour
         get => leftElevation;
         set
         {
-            leftElevation = value; 
+            leftElevation = Mathf.Clamp(value, 0.0f, 1.0f); 
         
             UpdateBrowPosition();
         }
@@ -134,7 +134,7 @@ public class FaceController : MonoBehaviour
         get => rightElevation;
         set
         {
-            rightElevation = value;
+            rightElevation = Mathf.Clamp(value, 0.0f, 1.0f);
         
             UpdateBrowPosition();
         }
@@ -153,7 +153,7 @@ public class FaceController : MonoBehaviour
         get => lids;
         set
         {
-            lids = value;
+            lids = Mathf.Clamp(value, 0.0f, 1.0f);
             
             UpdateLidPosition();
         }
@@ -389,5 +389,107 @@ public class FaceController : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(timeBetweenBlink.x, timeBetweenBlink.y));
             StartCoroutine(EyeLids());
         }
+    }
+
+    public List<float> HappinessBlend(float multiplier)
+    {
+        List<float> blend = new List<float>();
+        blend.Add(0.01f * multiplier); //mouthOpen
+        blend.Add(0.2f * multiplier); //upperLip
+        blend.Add(0.01f * multiplier); //lowerLip
+        blend.Add(0.4f * multiplier); //rounded
+        blend.Add(0.01f * multiplier); //smiling
+        blend.Add(0.5f * multiplier); //leftRotation
+        blend.Add(0.5f * multiplier); //rightRotation
+        blend.Add(0.25f * multiplier); //leftElevation
+        blend.Add(0.25f * multiplier); //rightElevation
+        blend.Add(0.2f * multiplier); //height
+
+        return blend;
+    }
+
+    public List<float> SadnessBend(float multiplier)
+    {
+        List<float> blend = new List<float>();
+        blend.Add(0.01f * multiplier); //mouthOpen
+        blend.Add(0.01f * multiplier); //upperLip
+        blend.Add(0.5f * multiplier); //lowerLip
+        blend.Add(0.4f * multiplier); //rounded
+        blend.Add(1f * multiplier); //smiling
+        blend.Add(0.01f * multiplier); //leftRotation
+        blend.Add(0.01f * multiplier); //rightRotation
+        blend.Add(0.01f * multiplier); //leftElevation
+        blend.Add(0.01f * multiplier); //rightElevation
+        blend.Add(0.2f * multiplier); //height
+
+        return blend;
+    }
+
+    public List<float> FearBlend(float multiplier)
+    {
+        List<float> blend = new List<float>();
+        blend.Add(0.35f * multiplier); //mouthOpen
+        blend.Add(0.01f * multiplier); //upperLip
+        blend.Add(0.1f * multiplier); //lowerLip
+        blend.Add(0.5f * multiplier); //rounded
+        blend.Add(0.7f * multiplier); //smiling
+        blend.Add(0.18f * multiplier); //leftRotation
+        blend.Add(0.1f * multiplier); //rightRotation
+        blend.Add(0.5f * multiplier); //leftElevation
+        blend.Add(0.9f * multiplier); //rightElevation
+        blend.Add(0.01f * multiplier); //height
+
+        return blend;
+    }
+
+    public List<float> DisgustBlend(float multiplier)
+    {
+        List<float> blend = new List<float>();
+        blend.Add(0.15f * multiplier); //mouthOpen
+        blend.Add(0.01f * multiplier); //upperLip
+        blend.Add(0.1f * multiplier); //lowerLip
+        blend.Add(0.7f * multiplier); //rounded
+        blend.Add(0.6f * multiplier); //smiling
+        blend.Add(0.4f * multiplier); //leftRotation
+        blend.Add(0.4f * multiplier); //rightRotation
+        blend.Add(0.75f * multiplier); //leftElevation
+        blend.Add(0.5f * multiplier); //rightElevation
+        blend.Add(0.5f * multiplier); //height
+
+        return blend;
+    }
+
+    public List<float> AngerBlend(float multiplier)
+    {
+        List<float> blend = new List<float>();
+        blend.Add(0.25f * multiplier); //mouthOpen
+        blend.Add(0.01f * multiplier); //upperLip
+        blend.Add(0.6f * multiplier); //lowerLip
+        blend.Add(0.01f * multiplier); //rounded
+        blend.Add(0.9f * multiplier); //smiling
+        blend.Add(1f * multiplier); //leftRotation
+        blend.Add(1f * multiplier); //rightRotation
+        blend.Add(0.01f * multiplier); //leftElevation
+        blend.Add(0.01f * multiplier); //rightElevation
+        blend.Add(0.01f * multiplier); //height
+
+        return blend;
+    }
+
+    public List<float> SurpriseBlend(float multiplier)
+    {
+        List<float> blend = new List<float>();
+        blend.Add(0.5f * multiplier); //mouthOpen
+        blend.Add(0.01f * multiplier); //upperLip
+        blend.Add(0.01f * multiplier); //lowerLip
+        blend.Add(0.1f * multiplier); //rounded
+        blend.Add(0.5f * multiplier); //smiling
+        blend.Add(0.3f * multiplier); //leftRotation
+        blend.Add(0.3f * multiplier); //rightRotation
+        blend.Add(0.5f * multiplier); //leftElevation
+        blend.Add(0.5f * multiplier); //rightElevation
+        blend.Add(0.01f * multiplier); //height
+
+        return blend;
     }
 }

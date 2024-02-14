@@ -10,11 +10,11 @@ public class Person
     private List<Trait> _traits = new List<Trait>();
     private Color _colour;
     private List<EmotionValue> _averageEVs = new List<EmotionValue>();
+
     public string Name { get => _name; }
     public int Age { get => _age; }
     public List<Trait> Traits { get => _traits; }
     public Color Colour { get => _colour; }
-
     public List<EmotionValue> AverageEVs { get => _averageEVs; }
 
 
@@ -80,8 +80,8 @@ public class Person
 
         for (int i = 0; i < Emotions.Count; i++)
         {
-            _averageEVs.Add(new EmotionValue(i, Emotions[i] / _traits.Count));
+            _averageEVs.Add(new EmotionValue(i, Emotions[i] / _traits.Count / PNGSIM_Globals.EMOTION_MAXIMUM_RATING));
         }
-        _averageEVs.Add(new EmotionValue(5, Surprise / Traits.Count));
+        _averageEVs.Add(new EmotionValue(5, Surprise / Traits.Count / PNGSIM_Globals.EMOTION_MAXIMUM_RATING));
     }
 }

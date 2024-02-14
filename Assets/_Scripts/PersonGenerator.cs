@@ -12,6 +12,7 @@ public class PersonGenerator : MonoBehaviour
     [SerializeField, Tooltip("x is min inclusive, y is max exclusive")] private Vector2 _numberOfTraitsRange;
     [SerializeField] private List<string> _nameListToGenerateFrom = new List<string>();
     [SerializeField, Tooltip("x is min inclusive, y is max exclusive")] private Vector2 _ageRange;
+    [SerializeField] private FaceController _faceController;
     
     private int _numberOfPersonToGenerate = 6;
 
@@ -20,12 +21,6 @@ public class PersonGenerator : MonoBehaviour
     void Start()
     {
         GeneratePersonOnClick();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void ModifyNumberOfPersonsToGenerate(TMP_InputField tmp)
@@ -81,5 +76,57 @@ public class PersonGenerator : MonoBehaviour
                 hasSelectedNewCorrectTraits = true;
             }
         }
+    }
+
+    public void FeedFaceController(Person person)
+    {
+        List<float> Blends = new List<float>();
+        Blends.Add(0.0f);
+        Blends.Add(0.0f);
+        Blends.Add(0.0f);
+        Blends.Add(0.0f);
+        Blends.Add(0.0f);
+        Blends.Add(0.0f);
+        Blends.Add(0.0f);
+        Blends.Add(0.0f);
+        Blends.Add(0.0f);
+        Blends.Add(0.0f);
+        foreach (EmotionValue ev in person.AverageEVs)
+        {
+            switch (ev.Emotion)
+            {
+                case Emotion.Happiness:
+                    Blends.AddRange(_faceController.HappinessBlend(ev.Value));
+                    break;
+                case Emotion.Sadness:
+                    Blends.AddRange(_faceController.SadnessBend(ev.Value));
+                    break;
+                case Emotion.Fear:
+                    Blends.AddRange(_faceController.FearBlend(ev.Value));
+                    break;
+                case Emotion.Disgust:
+                    Blends.AddRange(_faceController.DisgustBlend(ev.Value));
+                    break;
+                case Emotion.Anger:
+                    Blends.AddRange(_faceController.AngerBlend(ev.Value));
+                    break;
+                case Emotion.Surprise:
+                    Blends.AddRange(_faceController.SurpriseBlend(ev.Value));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        _faceController.MouthOpen = Blends[0];
+        _faceController.UpperLip = Blends[0];
+        _faceController.MouthOpen = Blends[0];
+        _faceController.MouthOpen = Blends[0];
+        _faceController.MouthOpen = Blends[0];
+        _faceController.MouthOpen = Blends[0];
+        _faceController.MouthOpen = Blends[0];
+        _faceController.MouthOpen = Blends[0];
+        _faceController.MouthOpen = Blends[0];
+        _faceController.MouthOpen = Blends[0];
     }
 }

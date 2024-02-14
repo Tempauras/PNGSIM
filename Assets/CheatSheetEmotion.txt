@@ -19,4 +19,4 @@ Sadness maxxed: MO = 0 | UL = 0 | LL = 0.5 | R = 0.4 | S = 1 | LR = RR = LE = RE
 Fear maxxed: MO = 0.35 | UL = 0 | LL = 0.1 | R = 0.5 | S = 0.7 | LR = 0.18 | RR = 0.1 | LE != RE >0.5 | H = 0
 Disgust maxxed: MO = 0.15 | UL = 0 | LL = 0.1 | R = 0.7 | S = 0.6 | LR = RR = 0.4 | LE != RE < 0.5 | H = 0.5
 Anger maxxed: MO = 0.25 | UL = 0 | LL = 0.6 | R = 0 | S = 0.9 | LR = RR = 1 | LE = RE = 0 | H = 0
-Surprise maxxed: MO = 0.5 | UL = 0 | LL = 0 | R = 0.1 | S = 0.5 | LR = RR < 0.4 > 0.2 | LE = RE = 0.5 | H = 0
+Surprise maxxed: MO = 0.5 | UL = 0 | LL = 0 | R = 0.1 | S = 0.5 | 0.2 < LR = RR < 0.4 | LE = RE = 0.5 | H = 0
