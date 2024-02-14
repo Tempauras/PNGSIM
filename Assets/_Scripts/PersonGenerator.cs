@@ -13,18 +13,13 @@ public class PersonGenerator : MonoBehaviour
     [SerializeField] private List<string> _nameListToGenerateFrom = new List<string>();
     [SerializeField, Tooltip("x is min inclusive, y is max exclusive")] private Vector2 _ageRange;
     
-    private int _numberOfPersonToGenerate;
+    private int _numberOfPersonToGenerate = 6;
 
     public List<Person> Persons = new List<Person>();
     // Start is called before the first frame update
     void Start()
     {
-        //
-        //for (int i = 0; i < numberOfPerson; i++)
-        //{
-        //    Persons.Add(GeneratePerson());
-        //    Debug.Log($"Generated new Person number {i + 1}, Name: {Persons[i].Name}, Age: {Persons[i].Age} with {Persons[i].Traits.Count} traits");
-        //}
+        GeneratePersonOnClick();
     }
 
     // Update is called once per frame

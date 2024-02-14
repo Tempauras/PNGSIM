@@ -271,11 +271,15 @@ public class FaceController : MonoBehaviour
         // //LidPosition
         // UpdateLidPosition();
         
+        
+        pupils[0].transform.localPosition = Vector2.zero;
+        pupils[1].transform.localPosition = Vector2.zero;
+        
         Vector2 directionOfMousePupilLeft =(Input.mousePosition - mainCamera.WorldToScreenPoint(pupils[0].transform.position)).normalized;
         Vector2 directionOfMousePupilRight =(Input.mousePosition - mainCamera.WorldToScreenPoint(pupils[1].transform.position)).normalized;
 
-        pupils[0].transform.localPosition = Vector2.zero + directionOfMousePupilLeft * pupilMoveDistance;
-        pupils[1].transform.localPosition = Vector2.zero + directionOfMousePupilRight * pupilMoveDistance;
+        pupils[0].transform.localPosition = directionOfMousePupilLeft * pupilMoveDistance;
+        pupils[1].transform.localPosition = directionOfMousePupilRight * pupilMoveDistance;
     }
 
     private void UpdateMinRootPos()
