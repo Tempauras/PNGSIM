@@ -96,22 +96,22 @@ public class PersonGenerator : MonoBehaviour
             switch (ev.Emotion)
             {
                 case Emotion.Happiness:
-                    Blends.AddRange(_faceController.HappinessBlend(ev.Value));
+                    AddBlendsTogether(ref Blends, _faceController.HappinessBlend(ev.Value));
                     break;
                 case Emotion.Sadness:
-                    Blends.AddRange(_faceController.SadnessBend(ev.Value));
+                    AddBlendsTogether(ref Blends, _faceController.SadnessBend(ev.Value));
                     break;
                 case Emotion.Fear:
-                    Blends.AddRange(_faceController.FearBlend(ev.Value));
+                    AddBlendsTogether(ref Blends, _faceController.FearBlend(ev.Value));
                     break;
                 case Emotion.Disgust:
-                    Blends.AddRange(_faceController.DisgustBlend(ev.Value));
+                    AddBlendsTogether(ref Blends, _faceController.DisgustBlend(ev.Value));
                     break;
                 case Emotion.Anger:
-                    Blends.AddRange(_faceController.AngerBlend(ev.Value));
+                    AddBlendsTogether(ref Blends, _faceController.AngerBlend(ev.Value));
                     break;
                 case Emotion.Surprise:
-                    Blends.AddRange(_faceController.SurpriseBlend(ev.Value));
+                    AddBlendsTogether(ref Blends, _faceController.SurpriseBlend(ev.Value));
                     break;
                 default:
                     break;
@@ -119,14 +119,25 @@ public class PersonGenerator : MonoBehaviour
         }
 
         _faceController.MouthOpen = Blends[0];
-        _faceController.UpperLip = Blends[0];
-        _faceController.MouthOpen = Blends[0];
-        _faceController.MouthOpen = Blends[0];
-        _faceController.MouthOpen = Blends[0];
-        _faceController.MouthOpen = Blends[0];
-        _faceController.MouthOpen = Blends[0];
-        _faceController.MouthOpen = Blends[0];
-        _faceController.MouthOpen = Blends[0];
-        _faceController.MouthOpen = Blends[0];
+        _faceController.UpperLip = Blends[1];
+        _faceController.LowerLip = Blends[2];
+        _faceController.Rounded = Blends[3];
+        _faceController.Smiling = Blends[4];
+        _faceController.LeftRotation = Blends[5];
+        _faceController.RightRotation = Blends[6];
+        _faceController.LeftElevation = Blends[7];
+        _faceController.RightElevation = Blends[8];
+        _faceController.Lids = Blends[9];
+    }
+
+    private void AddBlendsTogether(ref List<float>  OriginalBlend, List<float> BlendToAdd)
+    {
+        if (OriginalBlend.Count == BlendToAdd.Count)
+        {
+            for (int i = 0; i < OriginalBlend.Count; i++)
+            {
+                OriginalBlend[i] =+ BlendToAdd[i];
+            }
+        }
     }
 }
