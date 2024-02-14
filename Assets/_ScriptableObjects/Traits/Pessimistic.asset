@@ -20,11 +20,11 @@ MonoBehaviour:
   - Emotion: 1
     Value: 2
   - Emotion: 2
-    Value: 2
+    Value: 4
   - Emotion: 3
     Value: 0
   - Emotion: 4
-    Value: 1
+    Value: 2
   - Emotion: 5
     Value: 0
   NonCompatibleTrait:

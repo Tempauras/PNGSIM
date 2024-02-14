@@ -16,15 +16,15 @@ MonoBehaviour:
   TraitDescription: 
   TraitsEffect:
   - Emotion: 0
-    Value: 4
+    Value: 2
   - Emotion: 1
     Value: 0
   - Emotion: 2
-    Value: 1
+    Value: 0
   - Emotion: 3
     Value: 0
   - Emotion: 4
-    Value: 1
+    Value: 0
   - Emotion: 5
     Value: 2
   NonCompatibleTrait:

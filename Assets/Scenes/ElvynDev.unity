@@ -1926,7 +1926,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6b6ba54e1865c1b43bed0482e59db31c, type: 2}
   - {fileID: 11400000, guid: 4ab6a60241d40f74ca91c63a3460668b, type: 2}
   - {fileID: 11400000, guid: eb51363f21d962848b07a3de925353dd, type: 2}
-  _numberOfTraitsRange: {x: 1, y: 3}
+  _numberOfTraitsRange: {x: 1, y: 7}
   _nameListToGenerateFrom:
   - Arthur
   - Elvyn
@@ -4328,6 +4328,10 @@ PrefabInstance:
       propertyPath: mainCam
       value: 
       objectReference: {fileID: 681571409}
+    - target: {fileID: 2404346549045891704, guid: 3bb02f40c886d9e4fa25b30271fa94bc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2462276566317875610, guid: 3bb02f40c886d9e4fa25b30271fa94bc, type: 3}
       propertyPath: _rawImage
       value: 
@@ -4358,6 +4362,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3558780257159339375, guid: 3bb02f40c886d9e4fa25b30271fa94bc, type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4451399834516589442, guid: 3bb02f40c886d9e4fa25b30271fa94bc, type: 3}
+      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5268304284946415072, guid: 3bb02f40c886d9e4fa25b30271fa94bc, type: 3}

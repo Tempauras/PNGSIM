@@ -22,10 +22,10 @@ MonoBehaviour:
   - Emotion: 2
     Value: 0
   - Emotion: 3
-    Value: 2
+    Value: 4
   - Emotion: 4
-    Value: 3
+    Value: 2
   - Emotion: 5
-    Value: 1
+    Value: 0
   NonCompatibleTrait:
   - {fileID: 11400000, guid: 254af80dfe52d0745831663ef05f5437, type: 2}
