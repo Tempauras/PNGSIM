@@ -66,6 +66,8 @@ public class CanvasManager : MonoBehaviour
             traitGameObject.GetComponentInChildren<Button>().onClick.AddListener(delegate{ DeleteTrait(index, trait);});
             
         }
+        
+        personGenerator.FeedFaceController(person);
     }
 
     private void DeleteTrait(int index, Trait trait)
