@@ -78,8 +78,12 @@ public class Person
             default:
                 break;
         }
-        _colour *= (Surprise / Traits.Count/ PNGSIM_Globals.EMOTION_MAXIMUM_RATING);
-        _colour.a = 1;
+        if (Surprise != 0)
+        {
+            _colour *= (Surprise / Traits.Count / PNGSIM_Globals.EMOTION_MAXIMUM_RATING);
+            _colour.a = 1;
+        }
+
 
         for (int i = 0; i < Emotions.Count; i++)
         {
