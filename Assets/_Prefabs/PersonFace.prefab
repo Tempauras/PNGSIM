@@ -663,6 +663,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0}
   scale: 1
   thickness: -0.4
+  spriteRenderer: {fileID: 6016520540072912797}
 --- !u!212 &6016520540072912797
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -40,6 +40,8 @@ public class Person
 
     private void CalculateParameters()
     {
+        _averageEVs.Clear();
+        
         List<float> Emotions = new List<float>();
         Emotions.Add(0.0f); //Happiness
         Emotions.Add(0.0f); //Sadness
@@ -49,12 +51,12 @@ public class Person
         float Surprise = 0.0f;
         foreach (Trait trait in _traits)
         {
-            Emotions[0] += trait.TraitsEffect.First(x => x.Emotion == Emotion.Happiness).Value;
-            Emotions[1] += trait.TraitsEffect.First(x => x.Emotion == Emotion.Sadness).Value;
-            Emotions[2] += trait.TraitsEffect.First(x => x.Emotion == Emotion.Fear).Value;
-            Emotions[3] += trait.TraitsEffect.First(x => x.Emotion == Emotion.Disgust).Value;
-            Emotions[4] += trait.TraitsEffect.First(x => x.Emotion == Emotion.Anger).Value;
-            Surprise += trait.TraitsEffect.First(x => x.Emotion == Emotion.Surprise).Value;
+            Emotions[0] += trait.TraitsEffect[0].Value;
+            Emotions[1] += trait.TraitsEffect[1].Value;
+            Emotions[2] += trait.TraitsEffect[2].Value;
+            Emotions[3] += trait.TraitsEffect[3].Value;
+            Emotions[4] += trait.TraitsEffect[4].Value;
+            Surprise += trait.TraitsEffect[5].Value;
         }
         switch (Emotions.IndexOf(Emotions.Max()))
         {
@@ -76,12 +78,24 @@ public class Person
             default:
                 break;
         }
-        _colour *= (Surprise / Traits.Count);
+        _colour *= (Surprise / Traits.Count/ PNGSIM_Globals.EMOTION_MAXIMUM_RATING);
+        _colour.a = 1;
 
         for (int i = 0; i < Emotions.Count; i++)
         {
             _averageEVs.Add(new EmotionValue(i, Emotions[i] / _traits.Count / PNGSIM_Globals.EMOTION_MAXIMUM_RATING));
         }
         _averageEVs.Add(new EmotionValue(5, Surprise / Traits.Count / PNGSIM_Globals.EMOTION_MAXIMUM_RATING));
+    }
+    
+    public List<Trait> GetAllTraitIncompatibleWithCurrentTraits()
+    {
+        List<Trait> incompTraits = new List<Trait>();
+        foreach (Trait trait in _traits)
+        {
+            incompTraits.AddRange(trait.NonCompatibleTrait);
+        }
+
+        return incompTraits;
     }
 }

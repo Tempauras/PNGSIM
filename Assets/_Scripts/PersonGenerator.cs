@@ -18,6 +18,13 @@ public class PersonGenerator : MonoBehaviour
 
     public List<Person> Persons = new List<Person>();
     // Start is called before the first frame update
+
+
+    public List<Trait> TraitListToGenerateFrom => _traitListToGenerateFrom;
+
+    public FaceController FaceController => _faceController;
+
+
     void Start()
     {
         GeneratePersonOnClick();
@@ -128,6 +135,8 @@ public class PersonGenerator : MonoBehaviour
         _faceController.LeftElevation = Blends[7];
         _faceController.RightElevation = Blends[8];
         _faceController.Lids = Blends[9];
+
+        _faceController.UpdateColours(person.Colour);
     }
 
     private void AddBlendsTogether(ref List<float>  OriginalBlend, List<float> BlendToAdd)
@@ -136,7 +145,7 @@ public class PersonGenerator : MonoBehaviour
         {
             for (int i = 0; i < OriginalBlend.Count; i++)
             {
-                OriginalBlend[i] =+ BlendToAdd[i];
+                OriginalBlend[i] += BlendToAdd[i];
             }
         }
     }

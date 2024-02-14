@@ -177,7 +177,7 @@ public class FaceController : MonoBehaviour
     private float _maxYPosRoot;
     private float _minYPosRoot;
 
-    private const float MaxYLipOffset = .5f;
+    private const float MaxYLipOffset = .3f;
 
     private const float MaxSeparation = 1f;
     private const float MinSeparation = 0f;
@@ -200,12 +200,14 @@ public class FaceController : MonoBehaviour
     private const float MaxLidYScale = 0f;
     private const float MinLidYScale = 1.1f;
 
+    public UnityEvent initFinished;
+
     private void Start()
     {
         _originalLowerLipPosYLeft = pointsTransforms[6].transform.localPosition.y;
         _originalLowerLipPosYRight = pointsTransforms[7].transform.localPosition.y;
-        _originalUpperLipPosYLeft = pointsTransforms[6].transform.localPosition.y;
-        _originalUpperLipPosYRight = pointsTransforms[7].transform.localPosition.y;
+        _originalUpperLipPosYLeft = pointsTransforms[3].transform.localPosition.y;
+        _originalUpperLipPosYRight = pointsTransforms[4].transform.localPosition.y;
         
         _maxYPosRoot = pointsTransforms[2].transform.localPosition.y;
         
@@ -214,6 +216,9 @@ public class FaceController : MonoBehaviour
         StartCoroutine(EyeLids());
         
         OnValidate();
+        
+        
+        initFinished.Invoke();
     }
 
     private void OnValidate()
@@ -354,7 +359,7 @@ public class FaceController : MonoBehaviour
         browsTransforms[1].transform.localPosition = new Vector3(0.15f, elevateValueRight, 0);
     }
 
-    private void UpdateColours(Color colour)
+    public void UpdateColours(Color colour)
     {
         _shader.UpdateColours(colour);
     }

@@ -18,7 +18,7 @@ public class Shader : MonoBehaviour
     [SerializeField] private float scale;
     [SerializeField] private float thickness;
     
-    private SpriteRenderer _spriteRenderer;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     private int _kernelDraw;
     private int _kernelCalculateBezier;
@@ -27,9 +27,7 @@ public class Shader : MonoBehaviour
 
     private void Start()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-
-        UpdateColours(_spriteRenderer.color);
+        UpdateColours(spriteRenderer.color);
         
         //create a render texture for the compute shader to draw on 
         renderTexture = new RenderTexture(Cam.pixelWidth, Cam.pixelHeight, 0);
@@ -41,10 +39,10 @@ public class Shader : MonoBehaviour
         texture2D.filterMode = FilterMode.Point;
         
         Sprite sprite = Sprite.Create(texture2D, new Rect(0,0, texture2D.width,texture2D.height), new Vector2(0.5f,0.5f), 100);
-        _spriteRenderer.sprite = sprite;
+        spriteRenderer.sprite = sprite;
         
         //Add texture to shader on material
-        _spriteRenderer.material.SetTexture("_RenderTex", renderTexture);
+        spriteRenderer.material.SetTexture("_RenderTex", renderTexture);
 
         //Setting up the compute shader
         
@@ -103,13 +101,13 @@ public class Shader : MonoBehaviour
 
     public void UpdateColours(Color colour)
     {
-        _spriteRenderer.color = colour;
+        spriteRenderer.color = colour;
         
-        Cam.backgroundColor = _spriteRenderer.color;
+        Cam.backgroundColor = spriteRenderer.color;
 
         foreach (SpriteRenderer lidsSpriteRenderer in lidsSpriteRenderers)
         {
-            lidsSpriteRenderer.color = _spriteRenderer.color * Color.grey; 
+            lidsSpriteRenderer.color = spriteRenderer.color * Color.grey; 
         }
     }
 

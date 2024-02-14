@@ -1926,7 +1926,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6b6ba54e1865c1b43bed0482e59db31c, type: 2}
   - {fileID: 11400000, guid: 4ab6a60241d40f74ca91c63a3460668b, type: 2}
   - {fileID: 11400000, guid: eb51363f21d962848b07a3de925353dd, type: 2}
-  _numberOfTraitsRange: {x: 6, y: 7}
+  _numberOfTraitsRange: {x: 1, y: 3}
   _nameListToGenerateFrom:
   - Arthur
   - Elvyn
