@@ -1,9 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using TMPro;
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 
 public class PersonGenerator : MonoBehaviour
@@ -18,6 +23,8 @@ public class PersonGenerator : MonoBehaviour
 
     public List<Person> Persons = new List<Person>();
     // Start is called before the first frame update
+
+    private PhraseGenerator _phraseGenerator;
 
 
     public List<Trait> TraitListToGenerateFrom => _traitListToGenerateFrom;
@@ -64,7 +71,7 @@ public class PersonGenerator : MonoBehaviour
         }
         string name = _nameListToGenerateFrom[Random.Range(0, _nameListToGenerateFrom.Count)];
 
-        Person person = new Person(name, age, personTraits);
+        Person person = new Person(name, age, personTraits, _phraseGenerator);
         return person;
     }
 

@@ -114,14 +114,22 @@ public class Shader : MonoBehaviour
     private void OnDisable()
     {
         //release everything, no longer needed
-        _computeBuffer.Release();
+        if (_computeBuffer != null)
+        {
+            _computeBuffer.Release();
+        }
+        
         _pointBuffer.Release();
     }
 
     private void OnDestroy()
     {
         //release everything, no longer needed
-        _computeBuffer.Release();
+        if (_computeBuffer != null)
+        {
+            _computeBuffer.Release();
+        }
+        
         _pointBuffer.Release();
     }
 }

@@ -10,6 +10,7 @@ public class Person
     private List<Trait> _traits = new List<Trait>();
     private Color _colour;
     private List<EmotionValue> _averageEVs = new List<EmotionValue>();
+    private string _description;
 
     public string Name { get => _name; }
     public int Age { get => _age; }
@@ -17,13 +18,16 @@ public class Person
     public Color Colour { get => _colour; }
     public List<EmotionValue> AverageEVs { get => _averageEVs; }
 
+    public string Description => _description;
 
-    public Person(string Name, int Age, List<Trait> Traits)
+
+    public Person(string Name, int Age, List<Trait> Traits, PhraseGenerator phraseGenerator)
     {
         _name = Name;
         _age = Age;
         _traits = Traits;
         CalculateParameters();
+        _description = phraseGenerator.GeneratePhrase(this);
     }
 
     public void AddTrait(Trait trait)

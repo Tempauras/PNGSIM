@@ -11,12 +11,15 @@ using UnityEngine.UI;
 public class CanvasManager : MonoBehaviour
 {
     [SerializeField] private PersonGenerator personGenerator;
+    [SerializeField] private PhraseGenerator phraseGenerator;
     
     [SerializeField] private RectTransform TraitRoot;
     [SerializeField] private Button addButton;
     [SerializeField] private TMP_Dropdown addDropdown;
     [SerializeField] private Button regenButton;
     [SerializeField] private Button[] personButtons;
+
+    [SerializeField] private TextMeshProUGUI _textMeshProUGUI;
 
     [SerializeField] private GameObject traitPrefab;
 
@@ -74,6 +77,8 @@ public class CanvasManager : MonoBehaviour
         UpdateDropDown();
         
         personGenerator.FeedFaceController(_currentPerson);
+
+        _textMeshProUGUI.text = _currentPerson.Description;
     }
 
     private void DeleteTrait(int index, Trait trait)
