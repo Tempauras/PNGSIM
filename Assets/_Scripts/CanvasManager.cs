@@ -17,6 +17,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] private TMP_Dropdown addDropdown;
     [SerializeField] private Button regenButton;
     [SerializeField] private Button[] personButtons;
+    [SerializeField] private Button exitButton;
 
     [SerializeField] private TextMeshProUGUI _textMeshProUGUI;
 
@@ -36,6 +37,8 @@ public class CanvasManager : MonoBehaviour
         regenButton.onClick.AddListener(RefreshButtons);
         
         addButton.onClick.AddListener(AddTrait);
+
+        exitButton.onClick.AddListener(ExitGame);
 
         personGenerator.GeneratePersonOnClick();
         RefreshButtons();
@@ -87,6 +90,10 @@ public class CanvasManager : MonoBehaviour
 
     private void DeleteTrait(int index, Trait trait)
     {
+        if (personGenerator.Persons[index].Traits.Count <= 1)
+        {
+            return;
+        }
         personGenerator.Persons[index].RemoveTrait(trait);
         
         SelectPerson(index);
@@ -123,5 +130,10 @@ public class CanvasManager : MonoBehaviour
         _currentPerson.AddTrait(personGenerator.TraitListToGenerateFrom.First(x =>x.TraitName == data.text));
 
         SelectPerson(personGenerator.Persons.IndexOf(_currentPerson));
+    }
+
+    private void ExitGame()
+    {
+        Application.Quit();
     }
 }

@@ -7,6 +7,7 @@ using TMPro;
 using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -98,54 +99,89 @@ public class PersonGenerator : MonoBehaviour
 
     public void FeedFaceController(Person person)
     {
-        List<float> Blends = new List<float>();
-        Blends.Add(0.0f);
-        Blends.Add(0.0f);
-        Blends.Add(0.0f);
-        Blends.Add(0.0f);
-        Blends.Add(0.0f);
-        Blends.Add(0.0f);
-        Blends.Add(0.0f);
-        Blends.Add(0.0f);
-        Blends.Add(0.0f);
-        Blends.Add(0.0f);
-        foreach (EmotionValue ev in person.AverageEVs)
+        List<float> highestBlend = new List<float>();
+        List<float> secondHighestBlend = new List<float>();
+        for (int i = 0; i < 10; i++)
         {
-            switch (ev.Emotion)
-            {
-                case Emotion.Happiness:
-                    AddBlendsTogether(ref Blends, _faceController.HappinessBlend(ev.Value));
-                    break;
-                case Emotion.Sadness:
-                    AddBlendsTogether(ref Blends, _faceController.SadnessBend(ev.Value));
-                    break;
-                case Emotion.Fear:
-                    AddBlendsTogether(ref Blends, _faceController.FearBlend(ev.Value));
-                    break;
-                case Emotion.Disgust:
-                    AddBlendsTogether(ref Blends, _faceController.DisgustBlend(ev.Value));
-                    break;
-                case Emotion.Anger:
-                    AddBlendsTogether(ref Blends, _faceController.AngerBlend(ev.Value));
-                    break;
-                case Emotion.Surprise:
-                    AddBlendsTogether(ref Blends, _faceController.SurpriseBlend(ev.Value));
-                    break;
-                default:
-                    break;
-            }
+            highestBlend.Add(0.0f);
+            secondHighestBlend.Add(0.0f);
+        }
+        int highestIndex = person.AverageEVs.IndexOf(
+            person.AverageEVs.
+            Distinct().
+            OrderByDescending(ev => ev.Value).
+            First());
+
+        int secondHighestIndex = person.AverageEVs.IndexOf(
+            person.AverageEVs.
+            Distinct().
+            OrderByDescending(ev => ev.Value).
+            Skip(1).
+            First());
+
+        Debug.Log($"Highest blend is {person.AverageEVs[highestIndex].Emotion} with a value of {person.AverageEVs[highestIndex].Value} for {person.Name}");
+        Debug.Log($"Second highest blend is {person.AverageEVs[secondHighestIndex].Emotion} with a value of {person.AverageEVs[secondHighestIndex].Value} for {person.Name}");
+
+        switch (person.AverageEVs[highestIndex].Emotion)
+        {
+            case Emotion.Happiness:
+                highestBlend = _faceController.HappinessBlend();
+                break;
+            case Emotion.Sadness:
+                highestBlend = _faceController.SadnessBend();
+                break;
+            case Emotion.Fear:
+                highestBlend = _faceController.FearBlend();
+                break;
+            case Emotion.Disgust:
+                highestBlend = _faceController.DisgustBlend();
+                break;
+            case Emotion.Anger:
+                highestBlend = _faceController.AngerBlend();
+                break;
+            case Emotion.Surprise:
+                highestBlend = _faceController.SurpriseBlend();
+                break;
+            default:
+                break;
+        }
+        switch (person.AverageEVs[secondHighestIndex].Emotion)
+        {
+            case Emotion.Happiness:
+                highestBlend = _faceController.HappinessBlend();
+                break;
+            case Emotion.Sadness:
+                highestBlend = _faceController.SadnessBend();
+                break;
+            case Emotion.Fear:
+                highestBlend = _faceController.FearBlend();
+                break;
+            case Emotion.Disgust:
+                highestBlend = _faceController.DisgustBlend();
+                break;
+            case Emotion.Anger:
+                highestBlend = _faceController.AngerBlend();
+                break;
+            case Emotion.Surprise:
+                highestBlend = _faceController.SurpriseBlend();
+                break;
+            default:
+                break;
         }
 
-        _faceController.MouthOpen = Blends[0];
-        _faceController.UpperLip = Blends[1];
-        _faceController.LowerLip = Blends[2];
-        _faceController.Rounded = Blends[3];
-        _faceController.Smiling = Blends[4];
-        _faceController.LeftRotation = Blends[5];
-        _faceController.RightRotation = Blends[6];
-        _faceController.LeftElevation = Blends[7];
-        _faceController.RightElevation = Blends[8];
-        _faceController.Lids = Blends[9];
+        //We divide by 2 to assure that the face will always look closer to the highest blend
+        float alphaForLerp = person.AverageEVs[secondHighestIndex].Value / 2;
+
+        _faceController.MouthOpen = Mathf.Lerp(highestBlend[0], secondHighestBlend[0], alphaForLerp);
+        _faceController.UpperLip = Mathf.Lerp(highestBlend[1], secondHighestBlend[1], alphaForLerp);
+        _faceController.LowerLip = Mathf.Lerp(highestBlend[2], secondHighestBlend[2], alphaForLerp);
+        _faceController.Rounded = Mathf.Lerp(highestBlend[3], secondHighestBlend[3], alphaForLerp);
+        _faceController.Smiling = Mathf.Lerp(highestBlend[4], secondHighestBlend[4], alphaForLerp);
+        _faceController.LeftRotation = Mathf.Lerp(highestBlend[5], secondHighestBlend[5], alphaForLerp);
+        _faceController.RightRotation = Mathf.Lerp(highestBlend[6], secondHighestBlend[6], alphaForLerp);
+        _faceController.LeftElevation = Mathf.Lerp(highestBlend[7], secondHighestBlend[7], alphaForLerp);
+        _faceController.RightElevation = Mathf.Lerp(highestBlend[8], secondHighestBlend[8], alphaForLerp);
+        _faceController.Lids = Mathf.Lerp(highestBlend[9], secondHighestBlend[9], alphaForLerp);
 
         _faceController.UpdateColours(person.Colour);
     }
