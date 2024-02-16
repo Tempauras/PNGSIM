@@ -18,28 +18,33 @@ public class Person
     public Color Colour { get => _colour; }
     public List<EmotionValue> AverageEVs { get => _averageEVs; }
 
-    public string Description => _description;
+    public string Description
+    {
+        get => _description;
+        set => _description = value;
+    }
 
 
-    public Person(string Name, int Age, List<Trait> Traits, PhraseGenerator phraseGenerator)
+    public Person(string Name, int Age, List<Trait> Traits)
     {
         _name = Name;
         _age = Age;
         _traits = Traits;
         CalculateParameters();
-        _description = phraseGenerator.GeneratePhrase(this);
     }
 
     public void AddTrait(Trait trait)
     {
         _traits.Add(trait);
         CalculateParameters();
+        _description = PhraseGenerator.instance.GeneratePhrase(this);
     }
 
     public void RemoveTrait(Trait trait)
     {
         _traits.Remove(trait);
         CalculateParameters();
+        _description = PhraseGenerator.instance.GeneratePhrase(this);
     }
 
     private void CalculateParameters()

@@ -118,8 +118,11 @@ public class Shader : MonoBehaviour
         {
             _computeBuffer.Release();
         }
-        
-        _pointBuffer.Release();
+
+        if (_pointBuffer != null)
+        {
+            _pointBuffer.Release();
+        }
     }
 
     private void OnDestroy()
@@ -130,6 +133,9 @@ public class Shader : MonoBehaviour
             _computeBuffer.Release();
         }
         
-        _pointBuffer.Release();
+        if (_pointBuffer != null)
+        {
+            _pointBuffer.Release();
+        }
     }
 }

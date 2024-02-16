@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-    public class PhraseGenerator
+    public class PhraseGenerator : Singleton<PhraseGenerator>
     {
-        private int detailPercentage = 20;
+        [SerializeField] private int detailPercentage = 20;
         
-        public PhraseGenerator()
+        public void Start()
         {
             int _seed = (int)DateTime.Now.Ticks;
             Random.InitState(_seed);
@@ -96,7 +96,7 @@ using Random = UnityEngine.Random;
 
                 desc[^1] = '.';
 
-                description = desc.ToString();
+                description = new string(desc);
 
             }
             else if (lastChar != '.')

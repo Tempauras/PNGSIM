@@ -24,8 +24,6 @@ public class PersonGenerator : MonoBehaviour
     public List<Person> Persons = new List<Person>();
     // Start is called before the first frame update
 
-    private PhraseGenerator _phraseGenerator;
-
 
     public List<Trait> TraitListToGenerateFrom => _traitListToGenerateFrom;
 
@@ -55,7 +53,11 @@ public class PersonGenerator : MonoBehaviour
         Persons.Clear();
         for (int i = 0; i < _numberOfPersonToGenerate; i++)
         {
-            Persons.Add(GeneratePerson());
+            Person person = GeneratePerson();
+            Persons.Add(person);
+
+            person.Description = PhraseGenerator.instance.GeneratePhrase(person);
+            
             Debug.Log($"Generated new Person number {i + 1}, Name: {Persons[i].Name}, Age: {Persons[i].Age} with {Persons[i].Traits.Count} traits");
         }
     }
@@ -71,7 +73,7 @@ public class PersonGenerator : MonoBehaviour
         }
         string name = _nameListToGenerateFrom[Random.Range(0, _nameListToGenerateFrom.Count)];
 
-        Person person = new Person(name, age, personTraits, _phraseGenerator);
+        Person person = new Person(name, age, personTraits);
         return person;
     }
 
@@ -80,7 +82,9 @@ public class PersonGenerator : MonoBehaviour
     {
         bool hasSelectedNewCorrectTraits = false;
 
-        while(!hasSelectedNewCorrectTraits)
+        // while(!hasSelectedNewCorrectTraits)
+        // {
+        for (int i = 0; i < _traitListToGenerateFrom.Count && !hasSelectedNewCorrectTraits; i++)
         {
             Trait newTrait = _traitListToGenerateFrom[Random.Range(0, _traitListToGenerateFrom.Count)];
             if (!CurrentTraits.Find(x => x == newTrait) && !CurrentTraits.Exists(x => x.NonCompatibleTrait.Exists(x => x == newTrait)))

@@ -11,7 +11,6 @@ using UnityEngine.UI;
 public class CanvasManager : MonoBehaviour
 {
     [SerializeField] private PersonGenerator personGenerator;
-    [SerializeField] private PhraseGenerator phraseGenerator;
     
     [SerializeField] private RectTransform TraitRoot;
     [SerializeField] private Button addButton;
@@ -27,7 +26,13 @@ public class CanvasManager : MonoBehaviour
 
     private void Start()
     {
-        regenButton.onClick.AddListener(personGenerator.GeneratePersonOnClick);
+        regenButton.onClick.AddListener(()=>
+        {
+            int personIndex = personGenerator.Persons.IndexOf(_currentPerson);
+            personGenerator.GeneratePersonOnClick();
+            RefreshButtons();
+            SelectPerson(personIndex);
+        });
         regenButton.onClick.AddListener(RefreshButtons);
         
         addButton.onClick.AddListener(AddTrait);
@@ -47,7 +52,6 @@ public class CanvasManager : MonoBehaviour
             personButtons[j].onClick.AddListener(delegate { SelectPerson(j);});
 
             personButtons[j].GetComponentInChildren<TextMeshProUGUI>().text = personGenerator.Persons[j].Name;
-
         }
     }
     
@@ -91,15 +95,24 @@ public class CanvasManager : MonoBehaviour
     private void UpdateDropDown()
     {
         addDropdown.options.Clear();
-        var temp = personGenerator.TraitListToGenerateFrom;
-
-        temp.RemoveAll(x => _currentPerson.Traits.Contains(x) || _currentPerson.GetAllTraitIncompatibleWithCurrentTraits().Contains(x));
-
-        foreach (Trait trait in temp)
+        List<Trait> traitsList = new List<Trait>();
+        traitsList.AddRange(personGenerator.TraitListToGenerateFrom);
+    
+        traitsList.RemoveAll(x => _currentPerson.Traits.Contains(x) || _currentPerson.GetAllTraitIncompatibleWithCurrentTraits().Contains(x));
+    
+        foreach (Trait trait in traitsList)
         {
             addDropdown.options.Add(new TMP_Dropdown.OptionData(trait.TraitName));
         }
-        
+
+        if (addDropdown.options.Count > 0)
+        {
+            addDropdown.captionText.text = addDropdown.options[0].text;
+        }
+        else
+        {
+            addDropdown.captionText.text = "None left";
+        }
     }
     
     private void AddTrait()
