@@ -74,12 +74,11 @@ using Random = UnityEngine.Random;
             List<string> details = new List<string>();
             for (int i = 0; i < numTraits; i++)
             {
-                
                 if (Random.Range(1, 101) <= detailChance) 
                 {
                     if (startOfDetail)
                         description+= " He";
-                    details.Add(AddDetails(personalityTraits[i], startOfDetail));
+                    details.Add(AddDetails(personalityTraits[i]));
                     startOfDetail = false;
                 }
             }
@@ -102,7 +101,7 @@ using Random = UnityEngine.Random;
                     description += detailWithSeparator;
                 }
             }
-            else if (details.Count >0)
+            else if (details.Count > 0)
             {
                 description += details[0];
             }
@@ -141,7 +140,7 @@ using Random = UnityEngine.Random;
             return quantifiers[index];
         }
 
-        private string AddDetails(string trait, bool start)
+        private string AddDetails(string trait)
         {
             switch (trait)
             {
@@ -165,6 +164,18 @@ using Random = UnityEngine.Random;
                     return " tends to view things negatively and anticipates failure";
                 case "Tolerant":
                     return " accepts others' differences and is open-minded";
+                case "Sad":
+                    return " often feels sorrow and unhappiness";
+                case "Happy":
+                    return " is usually cheerful and content";
+                case "Disgusted":
+                    return " has a strong feeling of dislike or revulsion";
+                case "Angry":
+                    return " easily becomes mad or annoyed";
+                case "Surprised":
+                    return " feels amazed or astonished";
+                case "Fearful":
+                    return " is often afraid about what might happen";
                 default:
                     return "";
             }
