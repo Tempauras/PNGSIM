@@ -11,8 +11,8 @@ using Random = UnityEngine.Random;
         
         public void Start()
         {
-            int _seed = (int)DateTime.Now.Ticks;
-            Random.InitState(_seed);
+            int seed = (int)DateTime.Now.Ticks;
+            Random.InitState(seed);
         }
 
         public String GeneratePhrase(Person person)
@@ -77,7 +77,7 @@ using Random = UnityEngine.Random;
                     if (startOfDetail)
                         description+= " He";
                     if (i == numTraits - 1 || !startOfDetail)
-                        description += " and ";
+                        description += "and";
                     description += AddDetails(personalityTraits[i], startOfDetail);
                     startOfDetail = false;
                     if (i < numTraits - 2)
