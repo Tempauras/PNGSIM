@@ -4095,7 +4095,7 @@ MonoBehaviour:
   - {fileID: 409251731}
   - {fileID: 1261893802}
   - {fileID: 523842487}
-  exitButton: {fileID: 0}
+  exitButton: {fileID: 694023253}
   _textMeshProUGUI: {fileID: 1696039831}
   traitPrefab: {fileID: 546313822029226520, guid: 62ebf69e9500373488417319eb22c3f2, type: 3}
 --- !u!114 &2014726002 stripped

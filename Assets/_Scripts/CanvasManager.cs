@@ -43,7 +43,14 @@ public class CanvasManager : MonoBehaviour
         personGenerator.GeneratePersonOnClick();
         RefreshButtons();
         
-        personGenerator.FaceController.initFinished.AddListener(delegate { SelectPerson(0); });
+        //personGenerator.FaceController.initFinished.AddListener(delegate { SelectPerson(0); });
+        StartCoroutine(Delay());
+    }
+
+    private IEnumerator Delay()
+    {
+        yield return new WaitForEndOfFrame();
+        SelectPerson(0);
     }
 
     private void RefreshButtons()

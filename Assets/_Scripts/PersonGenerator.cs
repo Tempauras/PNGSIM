@@ -23,6 +23,7 @@ public class PersonGenerator : MonoBehaviour
     private int _numberOfPersonToGenerate = 6;
 
     public List<Person> Persons = new List<Person>();
+
     // Start is called before the first frame update
 
 
