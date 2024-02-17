@@ -27,4 +27,9 @@ MonoBehaviour:
     Value: 0
   - Emotion: 5
     Value: 0
-  NonCompatibleTrait: []
+  NonCompatibleTrait:
+  - {fileID: 11400000, guid: 668751f26be3dc34ea7f0043bbb45613, type: 2}
+  - {fileID: 11400000, guid: 409a7a091dd45ca45b82ebfeb383ec27, type: 2}
+  - {fileID: 11400000, guid: 32aefb744a056094f989acf4b5a8b109, type: 2}
+  - {fileID: 11400000, guid: e1834fb33d3ddc040b43f5448ca6c7e2, type: 2}
+  - {fileID: 11400000, guid: 1206bc4df9c1c8b408bd7643fea7c4cc, type: 2}
