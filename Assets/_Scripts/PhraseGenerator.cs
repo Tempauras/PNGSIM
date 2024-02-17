@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -70,19 +71,40 @@ using Random = UnityEngine.Random;
 
             description += ".";
             bool startOfDetail = true;
+            List<string> details = new List<string>();
             for (int i = 0; i < numTraits; i++)
             {
+                
                 if (Random.Range(1, 101) <= detailChance) 
                 {
                     if (startOfDetail)
                         description+= " He";
-                    if (i == numTraits - 1 || !startOfDetail)
-                        description += "and";
-                    description += AddDetails(personalityTraits[i], startOfDetail);
+                    details.Add(AddDetails(personalityTraits[i], startOfDetail));
                     startOfDetail = false;
-                    if (i < numTraits - 2)
-                        description += "; ";
                 }
+            }
+
+            if (details is { Count: > 1 })
+            {
+                List<string> withSeparator = new List<string>();
+
+                foreach (var detail in details)
+                {
+                    withSeparator.Add(detail + "; ");
+                }
+                
+                String lastDetail = withSeparator[^1];
+                withSeparator[^1] = "and";
+                withSeparator.Add(lastDetail);
+
+                foreach (var detailWithSeparator in withSeparator)
+                {
+                    description += detailWithSeparator;
+                }
+            }
+            else if (details.Count >0)
+            {
+                description += details[0];
             }
             
             description = description.TrimEnd();

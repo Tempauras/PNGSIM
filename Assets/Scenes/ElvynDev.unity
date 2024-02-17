@@ -3540,7 +3540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a71e234d6e7e4c55914c90bbd4a22169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detailPercentage: 20
+  detailPercentage: 33
 --- !u!4 &1719256400
 Transform:
   m_ObjectHideFlags: 0
