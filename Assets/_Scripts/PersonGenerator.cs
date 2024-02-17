@@ -149,22 +149,22 @@ public class PersonGenerator : MonoBehaviour
         switch (person.AverageEVs[secondHighestIndex].Emotion)
         {
             case Emotion.Happiness:
-                highestBlend = _faceController.HappinessBlend();
+                secondHighestBlend = _faceController.HappinessBlend();
                 break;
             case Emotion.Sadness:
-                highestBlend = _faceController.SadnessBend();
+                secondHighestBlend = _faceController.SadnessBend();
                 break;
             case Emotion.Fear:
-                highestBlend = _faceController.FearBlend();
+                secondHighestBlend = _faceController.FearBlend();
                 break;
             case Emotion.Disgust:
-                highestBlend = _faceController.DisgustBlend();
+                secondHighestBlend = _faceController.DisgustBlend();
                 break;
             case Emotion.Anger:
-                highestBlend = _faceController.AngerBlend();
+                secondHighestBlend = _faceController.AngerBlend();
                 break;
             case Emotion.Surprise:
-                highestBlend = _faceController.SurpriseBlend();
+                secondHighestBlend = _faceController.SurpriseBlend();
                 break;
             default:
                 break;

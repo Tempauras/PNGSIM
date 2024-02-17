@@ -2183,6 +2183,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6b6ba54e1865c1b43bed0482e59db31c, type: 2}
   - {fileID: 11400000, guid: 4ab6a60241d40f74ca91c63a3460668b, type: 2}
   - {fileID: 11400000, guid: eb51363f21d962848b07a3de925353dd, type: 2}
+  - {fileID: 11400000, guid: 668751f26be3dc34ea7f0043bbb45613, type: 2}
+  - {fileID: 11400000, guid: baed69a52d7f3e540b67e44dd39b87e6, type: 2}
+  - {fileID: 11400000, guid: 409a7a091dd45ca45b82ebfeb383ec27, type: 2}
+  - {fileID: 11400000, guid: 32aefb744a056094f989acf4b5a8b109, type: 2}
+  - {fileID: 11400000, guid: e1834fb33d3ddc040b43f5448ca6c7e2, type: 2}
+  - {fileID: 11400000, guid: 1206bc4df9c1c8b408bd7643fea7c4cc, type: 2}
   _numberOfTraitsRange: {x: 1, y: 7}
   _nameListToGenerateFrom:
   - Arthur
@@ -3086,7 +3092,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000061035156}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1539107770
